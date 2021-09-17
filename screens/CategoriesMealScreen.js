@@ -1,12 +1,13 @@
 import React from 'react'
 import {View, Text , StyleSheet,FlatList} from 'react-native';
 import {CATEGORIES ,MEALS} from '../data/dummy-data'
-import Meals from '../models/meals';
+import {useSelector} from 'react-redux'
 import MealItems from '../components/MealItems'
 
-const CategoriesMealScreen = props =>{
+const CategoriesMealScreen = ({ route, navigation, props}) =>{
 
     const renderMeatItems =(itemData)=>{
+      console.log(itemData.item.id)
         return(
         <MealItems
        title={itemData.item.title}
@@ -15,20 +16,25 @@ const CategoriesMealScreen = props =>{
        complexity={itemData.item.complexity}
        affordability={itemData.item.affordability}
        onSelectMeal={() => {
-         props.navigation.navigate({
-           routeName: 'MealDetail',
+
+        navigation.navigate('MealDetail',{
+          itemId : itemData.item.id,      
            params: {
-             mealId: itemData.item.id
+            itemId: itemData.item.id,
+             mealTitle : itemData.item.title
            }
-         });
+         }); 
        }}
      /> 
+     
         )
     }
-    const CategoiesID = props.navigation.getParam('categoriesId');
 
-    const displayMeal = MEALS.filter(Meals => Meals.categoryIds.indexOf(CategoiesID) >= 0)
-   
+    const availableMeals = useSelector(state => state.meals.filterMeals);
+    const {itemId} = route.params
+
+    const displayMeal = availableMeals.filter(Meals => Meals.categoryIds.indexOf(itemId) >= 0)
+    
     return(
         <View style={styles.screen}> 
             <FlatList  data={displayMeal} renderItem = {renderMeatItems} style={{width:'100%'}} />
