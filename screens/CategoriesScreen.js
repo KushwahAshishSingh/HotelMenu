@@ -12,10 +12,11 @@ import { CATEGORIES } from "../data/dummy-data";
 import Colors from "../constants/Colors";
 import CategoryGridTile from "../components/CategoryGridTile";
 import CategoriesMealScreen from "./CategoriesMealScreen";
-import { CommonActions, NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import { HeaderButton } from "../components/HeaderButton";
 const CategoriesScreen = ({ navigation, props }) => {
   const renderGridItems = (itemData) => {
     return (
@@ -40,8 +41,24 @@ const CategoriesScreen = ({ navigation, props }) => {
   );
 };
 
-CategoriesScreen.navigationOptions = {
-  headerTitle: "Cat Screen",
+CategoriesScreen.defaultNavigationOptions = (navdata) => {
+  return {
+    title: "demo",
+    headerStyle: {
+      backgroundColor: "#f4511e",
+    },
+    headerLeft: (
+      <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item
+          title="Menu"
+          iconName="ios-menu"
+          onPress={() => {
+            navdata.toggleDrawer();
+          }}
+        />
+      </HeaderButtons>
+    ),
+  };
 };
 
 const drawer = createDrawerNavigator();

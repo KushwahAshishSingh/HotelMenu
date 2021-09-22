@@ -46,6 +46,7 @@ MealDetailScreen.navigationOptions = (navigationData) => {
       //    options={({ route }) => ({ title: route.params.name })}
       options={{
         headerTitle: (props) => <LogoTitle {...props} />,
+
         headerRight: () => (
           <Button
             onPress={() => alert("This is a button!")}
